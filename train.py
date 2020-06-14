@@ -445,6 +445,9 @@ def evaluate(model, loss_fn, dataloader, metrics, params, args, summ_maker=None)
         # summaries already written.
         tbx_index = 0
         for i, sample in enumerate(dataloader):
+            image_write(ref_img_batch, 'ref.jpg')
+            image_write(search_batch, 'srch.jpg')
+            print('labels_batch = {}'.format(labels_batch))
             ref_img_batch = sample['ref_frame'].to(device)
             search_batch = sample['srch_frame'].to(device)
             labels_batch = sample['label'].to(device)
