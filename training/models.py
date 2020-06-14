@@ -251,5 +251,5 @@ if __name__ == '__main__':
     search_input = torch.randn(2, 3, 256, 256)
     ref_input = torch.randn(2, 3, 80, 80)
     out = model(ref_input, search_input)
-    print(f'{out.size() = }')
-    print(f'{out = }')
+    # print(f'{out.size() = }')
+    # print(f'{out = }')
