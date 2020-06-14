@@ -29,7 +29,7 @@ device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cp
 def image_write(img, name):  # 画像を表示
     np_img = np.transpose(make_grid(img).numpy(), (1, 2, 0))
     np_img = cv2.cvtColor(np_img, cv2.COLOR_BGR2RGB)
-    cv2.imwrite(name, np_img)
+    cv2.imwrite(np_img, name)
     # cv2.imshow('image', cv2.cvtColor(np_img, cv2.COLOR_BGR2RGB))
     # cv2.moveWindow('image', 30, 100)
     # if cv2.waitKey(0) & 0xFF == ord('q'):
