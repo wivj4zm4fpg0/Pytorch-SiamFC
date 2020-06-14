@@ -29,7 +29,7 @@ device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cp
 def image_write(img, name):  # 画像を表示
     np_img = np.transpose(make_grid(img).numpy(), (1, 2, 0))
     np_img = cv2.cvtColor(np_img, cv2.COLOR_BGR2RGB)
-    cv2.imwrite(np_img, name)
+    cv2.imwrite(name, np_img)
     # cv2.imshow('image', cv2.cvtColor(np_img, cv2.COLOR_BGR2RGB))
     # cv2.moveWindow('image', 30, 100)
     # if cv2.waitKey(0) & 0xFF == ord('q'):
@@ -354,7 +354,8 @@ def train(model, optimizer, loss_fn, dataloader, metrics, params, summ_maker=Non
         for i, sample in enumerate(dataloader):
             image_write(ref_img_batch, 'ref.jpg')
             image_write(search_batch, 'srch.jpg')
-            print('labels_batch = {}'.format(labels_batch))
+            print('labels_batch')
+            print(labels_batch)
             exit(0)
             ref_img_batch = sample['ref_frame'].to(device)
             search_batch = sample['srch_frame'].to(device)
