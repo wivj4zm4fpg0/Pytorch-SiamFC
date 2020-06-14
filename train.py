@@ -444,12 +444,15 @@ def evaluate(model, loss_fn, dataloader, metrics, params, args, summ_maker=None)
         # summaries already written.
         tbx_index = 0
         for i, sample in enumerate(dataloader):
+            if i < 10:
+                continue
             image_write(sample['ref_frame'], 'ref.jpg')
             image_write(sample['srch_frame'], 'srch.jpg')
             np.set_printoptions(threshold=9999)
-            print('labels_batch = {}'.format(sample['label'].to('cpu').detach().numpy().copy()))
+            shape = sample['label'].size()
+            numpy_labels = sample['label'].view(shape[1], shape[2], shape[3]).to('cpu').detach().numpy().copy()
+            print('labels_batch = {}'.format(numpy_labels))
             print('labels_batch.size() = {}'.format(sample['label'].size()))
-            exit(0)
             ref_img_batch = sample['ref_frame'].to(device)
             search_batch = sample['srch_frame'].to(device)
             labels_batch = sample['label'].to(device)
@@ -461,6 +464,8 @@ def evaluate(model, loss_fn, dataloader, metrics, params, args, summ_maker=None)
             embed_ref = model.get_embedding(ref_img_batch)
             embed_srch = model.get_embedding(search_batch)
             output_batch = model.match_corr(embed_ref, embed_srch)
+            print('output_batch.size() = {}'.format(output_batch.size()))
+            exit(0)
 
             loss = loss_fn(output_batch, labels_batch)
             # Make a TensorBoardX summary for the number of pairs informed by
