@@ -354,7 +354,7 @@ def train(model, optimizer, loss_fn, dataloader, metrics, params, summ_maker=Non
         for i, sample in enumerate(dataloader):
             image_write(ref_img_batch, 'ref.jpg')
             image_write(search_batch, 'srch.jpg')
-            print(f'labels_batch = {labels_batch}')
+            print('labels_batch = {}'.format(labels_batch))
             exit(0)
             ref_img_batch = sample['ref_frame'].to(device)
             search_batch = sample['srch_frame'].to(device)
