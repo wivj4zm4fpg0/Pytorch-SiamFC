@@ -1,9 +1,9 @@
-import xml.etree.ElementTree as ET
-import os
-from os.path import join, isdir, isfile, splitext
 import json
 import logging
+import os
 import shutil
+import xml.etree.ElementTree as ET
+from os.path import join, isdir, isfile, splitext
 
 import torch
 
@@ -33,7 +33,7 @@ def get_annotations(annot_dir, sequence_dir, frame_file):
         are all None.
     """
     # Separate the sequence from the frame id using the OS path separator
-    
+
     frame_number = splitext(frame_file)[0]
     annot_path = join(annot_dir, sequence_dir, frame_number + '.xml')
     if isfile(annot_path):
@@ -140,7 +140,7 @@ class RunningAverage():
         self.steps += 1
 
     def __call__(self):
-        return self.total/float(self.steps)
+        return self.total / float(self.steps)
 
 
 def set_logger(log_path):

@@ -1,20 +1,20 @@
-import os
-from os.path import join, relpath, isfile
-from math import sqrt
-import random
 import glob
 import json
+import os
+import random
+from math import sqrt
+from os.path import join, relpath, isfile
 
 import numpy as np
 from imageio import imread
 from scipy.misc import imresize
-from torchvision.transforms import ToTensor
 from torch.utils.data import Dataset
+from torchvision.transforms import ToTensor
 
 from training.crops_train import crop_img, resize_and_pad
-from utils.exceptions import IncompatibleImagenetStructure
-from training.train_utils import get_annotations, check_folder_tree
 from training.labels import create_BCELogit_loss_label as BCELoss
+from training.train_utils import get_annotations, check_folder_tree
+from utils.exceptions import IncompatibleImagenetStructure
 
 
 class ImageNetVID(Dataset):
@@ -249,7 +249,7 @@ class ImageNetVID(Dataset):
         """
         size = len(self.frames[seq_idx])
         if frame_idx is None:
-            first_frame_idx = random.randint(0, size-1)
+            first_frame_idx = random.randint(0, size - 1)
         else:
             first_frame_idx = frame_idx
 
@@ -277,10 +277,10 @@ class ImageNetVID(Dataset):
             ref_size: (int) The side of the square reference region in pixels.
                 Note that it is always an odd integer.
         """
-        margin_size = self.cxt_margin*(w + h)
+        margin_size = self.cxt_margin * (w + h)
         ref_size = sqrt((w + margin_size) * (h + margin_size))
         # make sur ref_size is an odd number
-        ref_size = (ref_size//2)*2 + 1
+        ref_size = (ref_size // 2) * 2 + 1
         return int(ref_size)
 
     def preprocess_sample(self, seq_idx, first_idx, second_idx):
@@ -321,11 +321,11 @@ class ImageNetVID(Dataset):
 
         # Get size of context region for the reference image, as the geometric
         # mean of the dimensions added with a context margin
-        ref_w = (ref_annot['xmax'] - ref_annot['xmin'])/2
-        ref_h = (ref_annot['ymax'] - ref_annot['ymin'])/2
+        ref_w = (ref_annot['xmax'] - ref_annot['xmin']) / 2
+        ref_h = (ref_annot['ymax'] - ref_annot['ymin']) / 2
         ref_ctx_size = self.ref_context_size(ref_h, ref_w)
-        ref_cx = (ref_annot['xmax'] + ref_annot['xmin'])/2
-        ref_cy = (ref_annot['ymax'] + ref_annot['ymin'])/2
+        ref_cx = (ref_annot['xmax'] + ref_annot['xmin']) / 2
+        ref_cy = (ref_annot['ymax'] + ref_annot['ymin']) / 2
 
         ref_frame = self.img_read(reference_frame_path)
         ref_frame = np.float32(ref_frame)
@@ -342,10 +342,10 @@ class ImageNetVID(Dataset):
             raise
 
         srch_ctx_size = ref_ctx_size * self.search_size / self.reference_size
-        srch_ctx_size = (srch_ctx_size//2)*2 + 1
+        srch_ctx_size = (srch_ctx_size // 2) * 2 + 1
 
-        srch_cx = (srch_annot['xmax'] + srch_annot['xmin'])/2
-        srch_cy = (srch_annot['ymax'] + srch_annot['ymin'])/2
+        srch_cx = (srch_annot['xmax'] + srch_annot['xmin']) / 2
+        srch_cy = (srch_annot['ymax'] + srch_annot['ymin']) / 2
 
         srch_frame = self.img_read(search_frame_path)
         srch_frame = np.float32(srch_frame)
@@ -370,7 +370,7 @@ class ImageNetVID(Dataset):
 
         out_dict = {'ref_frame': ref_frame, 'srch_frame': srch_frame,
                     'label': label, 'seq_idx': seq_idx, 'ref_idx': first_idx,
-                    'srch_idx': second_idx }
+                    'srch_idx': second_idx}
         return out_dict
 
     def __getitem__(self, idx):

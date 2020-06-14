@@ -18,13 +18,13 @@
 
 echo "Executing " $1 " with cProfile."
 {
-CUDA_LAUNCH_BLOCKING=1 python3 -m cProfile -o profile.pstats "$@" &&
-echo "Execution successful, saved stats to 'profile.pstats'" &&
-# Requires 'gprof2dot' to be in home directory. To get it type:
-# git clone https://github.com/jrfonseca/gprof2dot
-# in the home directory.
-~/gprof2dot/gprof2dot.py -f pstats profile.pstats | dot -Tsvg -o callgraph.svg &&
-echo "Saved graph of execution to callgraph.svg"
+  CUDA_LAUNCH_BLOCKING=1 python3 -m cProfile -o profile.pstats "$@" &&
+    echo "Execution successful, saved stats to 'profile.pstats'" &&
+    # Requires 'gprof2dot' to be in home directory. To get it type:
+    # git clone https://github.com/jrfonseca/gprof2dot
+    # in the home directory.
+    ~/gprof2dot/gprof2dot.py -f pstats profile.pstats | dot -Tsvg -o callgraph.svg &&
+    echo "Saved graph of execution to callgraph.svg"
 } || {
-echo "Failed to profile" $1
+  echo "Failed to profile" $1
 }

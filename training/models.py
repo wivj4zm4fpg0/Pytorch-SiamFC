@@ -20,31 +20,27 @@ class BaselineEmbeddingNet(nn.Module):
 
     def __init__(self):
         super(BaselineEmbeddingNet, self).__init__()
-        self.fully_conv = nn.Sequential(nn.Conv2d(3, 96, kernel_size=11,
-                                                  stride=2, bias=True),
-                                        nn.BatchNorm2d(96),
-                                        nn.ReLU(),
-                                        nn.MaxPool2d(3, stride=2),
+        self.fully_conv = nn.Sequential(
+            nn.Conv2d(3, 96, kernel_size=11, stride=2, bias=True),
+            nn.BatchNorm2d(96),
+            nn.ReLU(),
+            nn.MaxPool2d(3, stride=2),
 
-                                        nn.Conv2d(96, 256, kernel_size=5,
-                                                  stride=1, groups=2,
-                                                  bias=True),
-                                        nn.BatchNorm2d(256),
-                                        nn.ReLU(),
-                                        nn.MaxPool2d(3, stride=1),
-                                        nn.Conv2d(256, 384, kernel_size=3,
-                                                  stride=1, groups=1,
-                                                  bias=True),
-                                        nn.BatchNorm2d(384),
-                                        nn.ReLU(),
-                                        nn.Conv2d(384, 384, kernel_size=3,
-                                                  stride=1, groups=2,
-                                                  bias=True),
-                                        nn.BatchNorm2d(384),
-                                        nn.ReLU(),
-                                        nn.Conv2d(384, 32, kernel_size=3,
-                                                  stride=1, groups=2,
-                                                  bias=True))
+            nn.Conv2d(96, 256, kernel_size=5, stride=1, groups=2, bias=True),
+            nn.BatchNorm2d(256),
+            nn.ReLU(),
+            nn.MaxPool2d(3, stride=1),
+
+            nn.Conv2d(256, 384, kernel_size=3, stride=1, groups=1, bias=True),
+            nn.BatchNorm2d(384),
+            nn.ReLU(),
+
+            nn.Conv2d(384, 384, kernel_size=3, stride=1, groups=2, bias=True),
+            nn.BatchNorm2d(384),
+            nn.ReLU(),
+
+            nn.Conv2d(384, 32, kernel_size=3, stride=1, groups=2, bias=True)
+        )
 
     def forward(self, x):
         output = self.fully_conv(x)
@@ -67,28 +63,28 @@ class VGG11EmbeddingNet_5c(nn.Module):
 
     def __init__(self):
         super(VGG11EmbeddingNet_5c, self).__init__()
-        self.fully_conv = nn.Sequential(nn.Conv2d(3, 64, kernel_size=3,
-                                                  stride=1, bias=True),
-                                        nn.BatchNorm2d(64),
-                                        nn.ReLU(),
-                                        nn.MaxPool2d(2, stride=2),
+        self.fully_conv = nn.Sequential(
+            nn.Conv2d(3, 64, kernel_size=3, stride=1, bias=True),
+            nn.BatchNorm2d(64),
+            nn.ReLU(),
+            nn.MaxPool2d(2, stride=2),
 
-                                        nn.Conv2d(64, 128, kernel_size=3,
-                                                  stride=1, bias=True),
-                                        nn.BatchNorm2d(128),
-                                        nn.ReLU(),
-                                        nn.MaxPool2d(2, stride=2),
-                                        nn.Conv2d(128, 256, kernel_size=3,
-                                                  stride=1, bias=True),
-                                        nn.BatchNorm2d(256),
-                                        nn.ReLU(),
-                                        nn.Conv2d(256, 256, kernel_size=3,
-                                                  stride=1, bias=True),
-                                        nn.BatchNorm2d(256),
-                                        nn.ReLU(),
-                                        # Added ConvLayer, not in original model
-                                        nn.Conv2d(256, 32, kernel_size=3,
-                                                  stride=1, bias=True))
+            nn.Conv2d(64, 128, kernel_size=3, stride=1, bias=True),
+            nn.BatchNorm2d(128),
+            nn.ReLU(),
+            nn.MaxPool2d(2, stride=2),
+
+            nn.Conv2d(128, 256, kernel_size=3, stride=1, bias=True),
+            nn.BatchNorm2d(256),
+            nn.ReLU(),
+
+            nn.Conv2d(256, 256, kernel_size=3, stride=1, bias=True),
+            nn.BatchNorm2d(256),
+            nn.ReLU(),
+
+            # Added ConvLayer, not in original model
+            nn.Conv2d(256, 32, kernel_size=3, stride=1, bias=True)
+        )
 
     def forward(self, x):
         output = self.fully_conv(x)
@@ -111,39 +107,40 @@ class VGG16EmbeddingNet_8c(nn.Module):
 
     def __init__(self):
         super(VGG16EmbeddingNet_8c, self).__init__()
-        self.fully_conv = nn.Sequential(nn.Conv2d(3, 64, kernel_size=3,
-                                                  stride=1, bias=True),
-                                        nn.BatchNorm2d(64),
-                                        nn.ReLU(),
-                                        nn.Conv2d(64, 64, kernel_size=3,
-                                                  stride=1, bias=True),
-                                        nn.BatchNorm2d(64),
-                                        nn.ReLU(),
-                                        nn.MaxPool2d(2, stride=2),
-                                        nn.Conv2d(64, 128, kernel_size=3,
-                                                  stride=1, bias=True),
-                                        nn.BatchNorm2d(128),
-                                        nn.ReLU(),
-                                        nn.Conv2d(128, 128, kernel_size=3,
-                                                  stride=1, bias=True),
-                                        nn.BatchNorm2d(128),
-                                        nn.ReLU(),
-                                        nn.MaxPool2d(2, stride=2),
-                                        nn.Conv2d(128, 256, kernel_size=3,
-                                                  stride=1, bias=True),
-                                        nn.BatchNorm2d(256),
-                                        nn.ReLU(),
-                                        nn.Conv2d(256, 256, kernel_size=3,
-                                                  stride=1, bias=True),
-                                        nn.BatchNorm2d(256),
-                                        nn.ReLU(),
-                                        nn.Conv2d(256, 256, kernel_size=3,
-                                                  stride=1, bias=True),
-                                        nn.BatchNorm2d(256),
-                                        nn.ReLU(),
-                                        # Added ConvLayer, not in original model
-                                        nn.Conv2d(256, 32, kernel_size=3,
-                                                  stride=1, bias=True))
+        self.fully_conv = nn.Sequential(
+            nn.Conv2d(3, 64, kernel_size=3, stride=1, bias=True),
+            nn.BatchNorm2d(64),
+            nn.ReLU(),
+
+            nn.Conv2d(64, 64, kernel_size=3, stride=1, bias=True),
+            nn.BatchNorm2d(64),
+            nn.ReLU(),
+            nn.MaxPool2d(2, stride=2),
+
+            nn.Conv2d(64, 128, kernel_size=3, stride=1, bias=True),
+            nn.BatchNorm2d(128),
+            nn.ReLU(),
+
+            nn.Conv2d(128, 128, kernel_size=3, stride=1, bias=True),
+            nn.BatchNorm2d(128),
+            nn.ReLU(),
+            nn.MaxPool2d(2, stride=2),
+
+            nn.Conv2d(128, 256, kernel_size=3, stride=1, bias=True),
+            nn.BatchNorm2d(256),
+            nn.ReLU(),
+
+            nn.Conv2d(256, 256, kernel_size=3, stride=1, bias=True),
+            nn.BatchNorm2d(256),
+            nn.ReLU(),
+
+            nn.Conv2d(256, 256, kernel_size=3, stride=1, bias=True),
+            nn.BatchNorm2d(256),
+            nn.ReLU(),
+
+            # Added ConvLayer, not in original model
+            nn.Conv2d(256, 32, kernel_size=3, stride=1, bias=True)
+        )
 
     def forward(self, x):
         output = self.fully_conv(x)
@@ -173,7 +170,7 @@ class SiameseNet(nn.Module):
         # Calculates the upscale size based on the correlation map size and
         # the total stride of the network, so as to align the corners of the
         # original and the upscaled one, which also aligns the centers.
-        self.upsc_size = (self.corr_map_size-1)*self.stride + 1
+        self.upsc_size = (self.corr_map_size - 1) * self.stride + 1
         # The upscale_factor is the correspondence between a movement in the output
         # feature map and the input images. So if a network has a total stride of 4
         # and no deconvolutional or upscaling layers, a single pixel displacement
@@ -225,14 +222,12 @@ class SiameseNet(nn.Module):
         # [1 x (B.C) x H' x W']) and setting the number of groups to the size of
         # the batch. This grouped convolution/correlation is equivalent to a
         # correlation between the two images, though it is not obvious.
-        match_map = F.conv2d(embed_srch.view(1, b * c, h, w),
-                             embed_ref, groups=b)
+        match_map = F.conv2d(embed_srch.view(1, b * c, h, w), embed_ref, groups=b)
         # Here we reorder the dimensions to get back the batch dimension.
         match_map = match_map.permute(1, 0, 2, 3)
         match_map = self.match_batchnorm(match_map)
         if self.upscale:
-            match_map = F.interpolate(match_map, self.upsc_size, mode='bilinear',
-                                      align_corners=False)
+            match_map = F.interpolate(match_map, self.upsc_size, mode='bilinear', align_corners=False)
 
         return match_map
 
@@ -247,3 +242,14 @@ def weights_init(model):
     elif isinstance(model, nn.BatchNorm2d):
         normal_(model.weight, 1.0, 0.02)
         zeros_(model.bias)
+
+
+if __name__ == '__main__':
+    import torch
+
+    model = SiameseNet(VGG11EmbeddingNet_5c())
+    search_input = torch.randn(2, 3, 256, 256)
+    ref_input = torch.randn(2, 3, 80, 80)
+    out = model(ref_input, search_input)
+    print(f'{out.size() = }')
+    print(f'{out = }')

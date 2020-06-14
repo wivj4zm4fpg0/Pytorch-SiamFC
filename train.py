@@ -8,29 +8,28 @@ import torch
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 
+import training.losses as losses
+import training.metrics as met
+import training.models as mdl
 import training.optim as optimz
-from training.summary_utils import SummaryMaker
+import utils.image_utils as imutils
 from training import train_utils
 from training.datasets import ImageNetVID, ImageNetVID_val
 from training.labels import create_BCELogit_loss_label
-import training.models as mdl
-import training.losses as losses
-import training.metrics as met
+from training.summary_utils import SummaryMaker
 from training.train_utils import RunningAverage
-from utils.profiling import Timer
 from utils.exceptions import IncompleteArgument
-import utils.image_utils as imutils
+from utils.profiling import Timer
 
-device = torch.device("cuda") if torch.cuda.is_available() \
-    else torch.device("cpu")
+device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description="Training script")
     parser.add_argument('-m', '--mode', default='train', choices=['train', 'eval'],
                         help="The mode of execution of the script. Options are "
-                        "'train' to train a model, and 'eval' to evaluate a model "
-                        "on the ImageNet eval dataset.")
+                             "'train' to train a model, and 'eval' to evaluate a model "
+                             "on the ImageNet eval dataset.")
     parser.add_argument('-d', '--data_dir', default='/home/ml2/workspace_rafael/dummy_Imagenet',
                         help="Full path to the directory containing the dataset")
     parser.add_argument('-e', '--exp_name', default='default',
@@ -50,12 +49,12 @@ def parse_arguments():
     parser.add_argument('-f', '--imutils_flag', default='fast', type=str,
                         choices=imutils.VALID_FLAGS,
                         help="Optional, the flag of the image_utils defining "
-                        "the image processing tools.")
+                             "the image processing tools.")
     parser.add_argument('-s', '--summary_samples', default=5, type=int,
                         help="Optional, the number of pairs the TensorboardX "
-                        "samples during validation to write in the summary. "
-                        "For each epoch it saves the ref and the search "
-                        "embeddings as well as the final correlation map.")
+                             "samples during validation to write in the summary. "
+                             "For each epoch it saves the ref and the search "
+                             "embeddings as well as the final correlation map.")
     args = parser.parse_args()
     return args
 
@@ -176,7 +175,7 @@ def main(args):
 
             logging.info("Done")
             logging.info("Setup time: {}".format(setup_timer.elapsed))
-            parameters = filter(lambda p: p.requires_grad,model.parameters())
+            parameters = filter(lambda p: p.requires_grad, model.parameters())
             optimizer = optimz.OPTIMIZERS[params.optim](parameters, **params.optim_kwargs)
             # Set the scheduler, that updates the learning rate using a exponential
             # decay. If you don't want lr decay set it to 1.
@@ -312,8 +311,7 @@ def train_and_evaluate(model, train_dataloader, val_dataloader, optimizer, sched
         train_utils.save_dict_to_json(val_metrics, last_json_path)
 
 
-def train(model, optimizer, loss_fn, dataloader, metrics, params,
-          summ_maker=None):
+def train(model, optimizer, loss_fn, dataloader, metrics, params, summ_maker=None):
     """Train the model
     Args:
         model: (torch.nn.Module) the neural network
@@ -332,7 +330,7 @@ def train(model, optimizer, loss_fn, dataloader, metrics, params,
     model.train()
 
     # summary for current training loop and a running average object for loss
-    summ = {metric:RunningAverage() for metric in metrics}
+    summ = {metric: RunningAverage() for metric in metrics}
     loss_avg = RunningAverage()
     profiled_values = ['load_data', 'batch']
     profil_summ = {name: RunningAverage() for name in profiled_values}
